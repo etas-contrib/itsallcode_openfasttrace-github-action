@@ -33,3 +33,13 @@ Covers:
 - feat~standard-github-action~1
 
 Needs: impl
+
+### Filter specification items based on tags
+`req~filter-specitems-using-tags~1`
+
+The OFT Action supports filtering relevant specification items using OFT Tags.
+
+Covers:
+- feat~standard-github-action~1
+
+Needs: impl

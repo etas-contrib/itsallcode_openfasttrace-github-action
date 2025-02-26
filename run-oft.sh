@@ -1,20 +1,24 @@
-#!/bin/sh
+#!/bin/bash
 
-# [impl->req~run-oft-trace-command~1]
-fail_on_error=$1
-report_file_name=$2
-report_format=$3
-files=$4
+fail_on_error=${OFT_FAIL_ON_ERROR:-"false"}
+report_file_name=${OFT_REPORT_FILENAME:-"trace-report.txt"}
+report_format=${OFT_REPORT_FORMAT:-"plain"}
+tags=${OFT_TAGS:-""}
+file_patterns=${OFT_FILE_PATTERNS:-"."}
+
+options=(-o "$report_format" -f "$report_file_name")
+# [impl->req~filter-specitems-using-tags~1]
+if [[ -n "$tags" ]]; then
+  options=("${options[@]}" -t "$tags")
+fi
 
 echo "::notice::using OpenFastTrace JARs from: ${LIB_DIR}"
+echo "::notice::running OpenFastTrace for file patterns: $file_patterns"
 
-# Run OpenFastTrace
+# [impl->req~run-oft-trace-command~1]
 # shellcheck disable=SC2086
 # we need to provide the file patterns unquoted in order for the shell to expand any glob patterns like "*.md"
-if (java -cp "${LIB_DIR}/*" \
-  org.itsallcode.openfasttrace.core.cli.CliStarter trace -o "${report_format}" \
-  -f "${report_file_name}" \
-  ${files})
+if (java -cp "${LIB_DIR}/*" org.itsallcode.openfasttrace.core.cli.CliStarter trace "${options[@]}" $file_patterns)
 then
   echo "oft-exit-code=0" >> "${GITHUB_OUTPUT}"
   echo "All specification items are covered." >> "${GITHUB_STEP_SUMMARY}"
