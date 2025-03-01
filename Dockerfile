@@ -1,5 +1,7 @@
 # [impl->req~run-oft-trace-command~1]
 FROM eclipse-temurin:22-jre-alpine
+# alpine comes with sh only, by default
+RUN apk add --no-cache bash
 
 ARG OFT_CORE_VERSION=4.1.0
 ARG OFT_ASCIIDOC_PLUGIN_VERSION=0.2.0
@@ -13,6 +15,6 @@ wget -P $LIB_DIR ${base_url}/openfasttrace/releases/download/$OFT_CORE_VERSION/o
 wget -P $LIB_DIR ${base_url}/openfasttrace-asciidoc-plugin/releases/download/$OFT_ASCIIDOC_PLUGIN_VERSION/openfasttrace-asciidoc-plugin-$OFT_ASCIIDOC_PLUGIN_VERSION-with-dependencies.jar
 EOF
 
-COPY run-oft.sh /opt/oft/run-oft.sh 
+COPY run-oft.sh /opt/oft/run-oft.sh
 
 ENTRYPOINT [ "/opt/oft/run-oft.sh" ]

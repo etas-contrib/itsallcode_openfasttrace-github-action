@@ -23,7 +23,7 @@ jobs:
         with:
           report-filename: ${{ env.REPORT_FILENAME }}
           report-format: "html"
-          file-patterns: "."
+          file-patterns: ${{ github.workspace }}
 
       - name: Upload tracing report
         id: upload-report

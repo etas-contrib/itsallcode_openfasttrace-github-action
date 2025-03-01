@@ -8,7 +8,7 @@ description: |
 inputs:
   file-patterns:
     description: |
-      A whitespace separated list of (Bash standard) glob patterns which specify the files and directories to include in the OFT trace run.
+      A whitespace separated list of (standard Bash) glob patterns which specify the files and directories to include in the OFT trace run.
       If not specified, the local workspace directory is used.
     default: "."
     required: false
@@ -19,6 +19,10 @@ inputs:
   report-format:
     description: The format of the report that OpenFastTrace should produce.
     default: "plain"
+    required: false
+  tags:
+    description: |
+      A comma separated list of tags to use for filtering specification items.
     required: false
   fail-on-error:
     description: |
@@ -35,8 +39,9 @@ outputs:
 runs:
   using: "docker"
   image: "Dockerfile"
-  args:
-    - ${{ inputs.fail-on-error }}
-    - ${{ inputs.report-filename }}
-    - ${{ inputs.report-format }}
-    - ${{ inputs.file-patterns }}
+  env:
+    OFT_FILE_PATTERNS: ${{ inputs.file-patterns }}
+    OFT_REPORT_FORMAT: ${{ inputs.report-format }}
+    OFT_REPORT_FILENAME: ${{ inputs.report-filename }}
+    OFT_TAGS: ${{ inputs.tags }}
+    OFT_FAIL_ON_ERROR: ${{ inputs.fail-on-error }}
