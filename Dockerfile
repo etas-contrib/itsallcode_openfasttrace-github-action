@@ -3,7 +3,7 @@ FROM eclipse-temurin:22-jre-alpine
 # alpine comes with sh only, by default
 RUN apk add --no-cache bash
 
-ARG OFT_CORE_VERSION=4.1.0
+ARG OFT_CORE_VERSION=4.2.0
 ARG OFT_ASCIIDOC_PLUGIN_VERSION=0.3.0
 
 ENV LIB_DIR=/opt/oft/lib
